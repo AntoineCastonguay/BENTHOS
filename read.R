@@ -1,9 +1,6 @@
 # Fonction read.dossier
 
-read.dossier <- function(dossier,rep.travail){
-  
-  # Changer le repertoir de travail pour les datas
-  setwd(dossier)
+read.dossier <- function(dossier){
   
   # Liste tous les fichiers du dossier
   fichiers <- list.files(dossier)
@@ -12,12 +9,10 @@ read.dossier <- function(dossier,rep.travail){
   fichiersCSV <- fichiers[-1]
   
   # Lecture des fichiers .csv 
-  data_list <- lapply(fichiersCSV, read.csv)
+  data_list <- lapply(paste0(dossier,fichiersCSV), read.csv)
   
   # Fusionner les lectures des fichiers
   benthos <- do.call(rbind, data_list)
-  
-  setwd(rep.travail)
   
   return(benthos)
 }

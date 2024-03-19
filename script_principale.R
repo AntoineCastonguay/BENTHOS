@@ -4,18 +4,16 @@ library(dplyr)
 
 # Repertoir de travail
 #### WARNING : changer rep.travail pour votre chemin a vous
-rep.travail <- "~/R_projet/BIO500/projet_benthos/"
-setwd(rep.travail)
 
 # Si premiere ouverture : 
 #source("script_premiere_utilisation.R")
 
 # Emplacement dossier data benthos
-dossier <- paste0(rep.travail,"benthos")
+dossier <- "benthos/"
 
 # Extraction des données benthos
 source("read.R")
-  benthos <- read.dossier(dossier, rep.travail)
+  benthos <- read.dossier(dossier)
   
 # Enleve toues les colonnes avec juste des NA
 source("colNA.R")
