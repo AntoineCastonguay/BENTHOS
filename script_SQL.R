@@ -2,8 +2,10 @@
 
 library(RSQLite)
 
+# connection à la base de donnée
 con <- dbConnect(SQLite(), dbname="benthos.db")
 
+# Création de la table espece
 dbSendQuery(con, "DROP TABLE IF EXISTS espece")
 creer_espece <- 
   "CREATE TABLE espece (
@@ -18,6 +20,7 @@ creer_espece <-
   );"
 dbSendQuery(con, creer_espece)
 
+# Création de la table site
 dbSendQuery(con, "DROP TABLE IF EXISTS site")
 creer_site <-
   "CREATE TABLE site (
@@ -30,6 +33,7 @@ creer_site <-
   );"
 dbSendQuery(con, creer_site)
 
+# Création de la table condition_echantillonnage
 dbSendQuery(con, "DROP TABLE IF EXISTS condition_echantillonnage")
 creer_condition_echantillonnage <- 
   "CREATE TABLE condition_echantillonnage (
@@ -47,6 +51,7 @@ creer_condition_echantillonnage <-
   );"
 dbSendQuery(con, creer_condition_echantillonnage)
 
+# Cération de la table abondance
 dbSendQuery(con, "DROP TABLE IF EXISTS abondance")
 creer_abondance <-
   "CREATE TABLE abondance (
@@ -61,11 +66,13 @@ creer_abondance <-
   );"
 dbSendQuery(con, creer_abondance)
 
+# lecture des données Benthos
 bd.espece <- read.csv("taxonomie.csv")
 bd.site <- read.csv("site.csv")
 bd.cond.ech <- read.csv("condition_echantillonnage.csv")
 bd.ab <- read.csv("abondance.csv")
 
+# Integration des données dans la base de données
 dbWriteTable(con, append = TRUE, name = "espece", value = bd.espece, row.names = FALSE)
 dbWriteTable(con, append = TRUE, name = "site", value = bd.site, row.names = FALSE)
 dbWriteTable(con, append = TRUE, name = "condition_echantillonnage", value = bd.cond.ech, row.names = FALSE)

@@ -1,12 +1,11 @@
 # Projet benthos Antoine, Claudiane et Juliette
 
-library(dplyr)
+# Si pas deja fait, il faut ouvrir le projet BENTHOS.Rproj
 
-# Repertoir de travail
-#### WARNING : changer rep.travail pour votre chemin a vous
-
-# Si premiere ouverture : 
+# Si premiere ouverture effecteur cette commande sinon laisser cette commande en commentaire
 #source("script_premiere_utilisation.R")
+
+library(dplyr)
 
 # Emplacement dossier data benthos
 dossier <- "benthos/"
@@ -25,9 +24,7 @@ source("normalize_time.R")
     benthos$heure_obs[i] <- normalize.time(benthos$heure_obs[i])
   }
 
-
 ### WARNING : public avertis!!!!!!
-
 
 # Liste toutes les identification differente recenser
 list.esp <- unique(benthos$nom_sci)
@@ -63,6 +60,9 @@ Coleoptera
 Scarabaeidae
 Caecidota
 
+# les mots precedant sont les reponces pour l'entre manuelle de taxonomie
+
+# Création des data.frame selon les tables choisi
 taxonomie <- as.data.frame(taxonomie)
 taxonomie <- data.frame(identification = taxonomie$identification,
                         phylum = taxonomie$phylum,
@@ -77,6 +77,7 @@ abondance <- data.frame(date_ab = benthos$date,
                         identification_ab = benthos$nom_sci,
                         abondance = benthos$abondance)
 
+# Garde juste les entré différente
 benthos.cond <- benthos %>% distinct(date, .keep_all = TRUE)
 
 site <- data.frame(date = benthos.cond$date,     
@@ -94,6 +95,7 @@ condition_echantillonnage <- data.frame(date_cond = benthos.cond$date,
                                         transparence_eau = benthos.cond$transparence_eau,
                                         temperature_eau_c = benthos.cond$temperature_eau_c)
 
+# écriture des fichier .csv
 write.csv(x = taxonomie,file = "taxonomie.csv",row.names = FALSE)
 write.csv(x = site,file = "site.csv",row.names = FALSE)
 write.csv(x = condition_echantillonnage,file = "condition_echantillonnage.csv",row.names = FALSE)
