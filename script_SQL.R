@@ -2,13 +2,14 @@
 
 library(RSQLite)
 
-# connection à la base de donnée
-con <- dbConnect(SQLite(), dbname="benthos.db")
-
-# Création de la table espece
-dbSendQuery(con, "DROP TABLE IF EXISTS espece")
-creer_espece <- 
-  "CREATE TABLE espece (
+SQL.make <- function(){
+  # connection à la base de donnée
+  con <- dbConnect(SQLite(), dbname="benthos.db")
+  
+  # Création de la table espece
+  dbSendQuery(con, "DROP TABLE IF EXISTS espece")
+  creer_espece <- 
+    "CREATE TABLE espece (
     identification        VARCHAR(50),
     phylum                VARCHAR(50),
     class                 VARCHAR(50),
@@ -18,12 +19,12 @@ creer_espece <-
     taxo_min              VARCHAR(50),
     PRIMARY KEY (identification)
   );"
-dbSendQuery(con, creer_espece)
-
-# Création de la table site
-dbSendQuery(con, "DROP TABLE IF EXISTS site")
-creer_site <-
-  "CREATE TABLE site (
+  dbSendQuery(con, creer_espece)
+  
+  # Création de la table site
+  dbSendQuery(con, "DROP TABLE IF EXISTS site")
+  creer_site <-
+    "CREATE TABLE site (
     date              VARCHAR(50),
     site              VARCHAR(50),
     date_obs          VARCHAR(50),
@@ -31,12 +32,12 @@ creer_site <-
     fraction          DOUBLE(5),
     PRIMARY KEY (date,site)
   );"
-dbSendQuery(con, creer_site)
-
-# Création de la table condition_echantillonnage
-dbSendQuery(con, "DROP TABLE IF EXISTS condition_echantillonnage")
-creer_condition_echantillonnage <- 
-  "CREATE TABLE condition_echantillonnage (
+  dbSendQuery(con, creer_site)
+  
+  # Création de la table condition_echantillonnage
+  dbSendQuery(con, "DROP TABLE IF EXISTS condition_echantillonnage")
+  creer_condition_echantillonnage <- 
+    "CREATE TABLE condition_echantillonnage (
     date_cond           VARCHAR(50),
     site_cond           VARCHAR(50),
     station             VARCHAR(50),
@@ -49,12 +50,12 @@ creer_condition_echantillonnage <-
     FOREIGN KEY (date_cond) REFERENCES site(date),
     FOREIGN KEY (site_cond) REFERENCES site(site)
   );"
-dbSendQuery(con, creer_condition_echantillonnage)
-
-# Cération de la table abondance
-dbSendQuery(con, "DROP TABLE IF EXISTS abondance")
-creer_abondance <-
-  "CREATE TABLE abondance (
+  dbSendQuery(con, creer_condition_echantillonnage)
+  
+  # Cération de la table abondance
+  dbSendQuery(con, "DROP TABLE IF EXISTS abondance")
+  creer_abondance <-
+    "CREATE TABLE abondance (
     date_ab             VARCHAR(50),
     site_ab             VARCHAR(50),
     identification_ab   VARCHAR(50),
@@ -64,17 +65,19 @@ creer_abondance <-
     FOREIGN KEY (site_ab) REFERENCES site(site),
     FOREIGN KEY (identification_ab) REFERENCES espece(identification)
   );"
-dbSendQuery(con, creer_abondance)
+  dbSendQuery(con, creer_abondance)
+  
+  # lecture des données Benthos
+  bd.espece <- read.csv("taxonomie.csv")
+  bd.site <- read.csv("site.csv")
+  bd.cond.ech <- read.csv("condition_echantillonnage.csv")
+  bd.ab <- read.csv("abondance.csv")
+  
+  # Integration des données dans la base de données
+  dbWriteTable(con, append = TRUE, name = "espece", value = bd.espece, row.names = FALSE)
+  dbWriteTable(con, append = TRUE, name = "site", value = bd.site, row.names = FALSE)
+  dbWriteTable(con, append = TRUE, name = "condition_echantillonnage", value = bd.cond.ech, row.names = FALSE)
+  dbWriteTable(con, append = TRUE, name = "abondance", value = bd.ab, row.names = FALSE)
+  dbDisconnect(con)
+}
 
-# lecture des données Benthos
-bd.espece <- read.csv("taxonomie.csv")
-bd.site <- read.csv("site.csv")
-bd.cond.ech <- read.csv("condition_echantillonnage.csv")
-bd.ab <- read.csv("abondance.csv")
-
-# Integration des données dans la base de données
-dbWriteTable(con, append = TRUE, name = "espece", value = bd.espece, row.names = FALSE)
-dbWriteTable(con, append = TRUE, name = "site", value = bd.site, row.names = FALSE)
-dbWriteTable(con, append = TRUE, name = "condition_echantillonnage", value = bd.cond.ech, row.names = FALSE)
-dbWriteTable(con, append = TRUE, name = "abondance", value = bd.ab, row.names = FALSE)
-dbDisconnect(con)

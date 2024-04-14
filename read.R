@@ -1,6 +1,9 @@
 # Fonction read.dossier
 
-read.dossier <- function(dossier){
+read.dossier <- function(){
+  
+  # Emplacement dossier data benthos
+  dossier <- "benthos/"
   
   # Liste tous les fichiers du dossier
   fichiers <- list.files(dossier)
