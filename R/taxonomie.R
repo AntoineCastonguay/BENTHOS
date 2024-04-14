@@ -59,7 +59,7 @@ taxo <- function(list.esp, list.esp.double){
   
   # Trouve le plus bas niveau taxonomique en commun des espece double
   list.taxo.double <- c(0)
-source("taxo_commun.R")  
+source("R/taxo_commun.R")  
   for (i in seq(1,length(espece.info.double),by =2)) {
     # appele la fonction taxo.commun
     taxo.en.commun <- taxo.commun(espece.info.double[[i]],espece.info.double[[i+1]])
