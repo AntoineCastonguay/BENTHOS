@@ -36,6 +36,6 @@ list(
   ),
   tar_target(
     SQL,
-    SQL.make()
+    SQL.make(table)
   )
 )

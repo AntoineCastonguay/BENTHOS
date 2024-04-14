@@ -35,9 +35,10 @@ prep.table <- function(benthos, taxonomie){
                                           transparence_eau = benthos.cond$transparence_eau,
                                           temperature_eau_c = benthos.cond$temperature_eau_c)
   
-  # écriture des fichier .csv
-  write.csv(x = taxonomie,file = "taxonomie.csv",row.names = FALSE)
-  write.csv(x = site,file = "site.csv",row.names = FALSE)
-  write.csv(x = condition_echantillonnage,file = "condition_echantillonnage.csv",row.names = FALSE)
-  write.csv(x = abondance,file = "abondance.csv",row.names = FALSE) 
+  # # écriture des fichier .csv
+  # write.csv(x = taxonomie,file = "taxonomie.csv",row.names = FALSE)
+  # write.csv(x = site,file = "site.csv",row.names = FALSE)
+  # write.csv(x = condition_echantillonnage,file = "condition_echantillonnage.csv",row.names = FALSE)
+  # write.csv(x = abondance,file = "abondance.csv",row.names = FALSE) 
+  return(list(taxonomie,abondance,site,condition_echantillonnage))
 }

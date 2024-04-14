@@ -1,6 +1,6 @@
 # SQL
 
-SQL.make <- function(){
+SQL.make <- function(table){
   # connection à la base de donnée
   con <- dbConnect(SQLite(), dbname="benthos.db")
   
@@ -65,11 +65,16 @@ SQL.make <- function(){
   );"
   dbSendQuery(con, creer_abondance)
   
-  # lecture des données Benthos
-  bd.espece <- read.csv("taxonomie.csv")
-  bd.site <- read.csv("site.csv")
-  bd.cond.ech <- read.csv("condition_echantillonnage.csv")
-  bd.ab <- read.csv("abondance.csv")
+  # # lecture des données Benthos
+  # bd.espece <- read.csv("taxonomie.csv")
+  # bd.site <- read.csv("site.csv")
+  # bd.cond.ech <- read.csv("condition_echantillonnage.csv")
+  # bd.ab <- read.csv("abondance.csv")
+  
+  bd.espece <- table[[1]]  
+  bd.ab <- table[[2]]
+  bd.site <- table[[3]]
+  bd.cond.ech <- table[[4]]
   
   # Integration des données dans la base de données
   dbWriteTable(con, append = TRUE, name = "espece", value = bd.espece, row.names = FALSE)
